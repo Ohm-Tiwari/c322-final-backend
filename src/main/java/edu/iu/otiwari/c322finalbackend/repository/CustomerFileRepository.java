@@ -30,7 +30,7 @@ public class CustomerFileRepository {
     }
 
     private static final String NEW_LINE = System.lineSeparator();
-    private static final String DATABASE_NAME = "ducks/customers.txt";
+    private static final String DATABASE_NAME = "flowers/customers.txt";
     private static void appendToFile(Path path, String content)
             throws IOException {
         Files.write(path,
@@ -39,7 +39,7 @@ public class CustomerFileRepository {
                 StandardOpenOption.APPEND);
     }
     public void save(Customer customer) throws Exception {
-        Customer c = findByUsername(customer.username());
+        Customer c = findByUsername(customer.getUsername());
         if(c != null) {
             throw new
                     Exception("This username already exists. " +
@@ -47,10 +47,10 @@ public class CustomerFileRepository {
         }
         Path path = Paths.get(DATABASE_NAME);
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
-        String passwordEncoded = bc.encode(customer.password());
-        String data = customer.username() + ","
+        String passwordEncoded = bc.encode(customer.getPassword());
+        String data = customer.getUsername() + ","
                 + passwordEncoded
-                + "," + customer.email();
+                + "," + customer.getEmail();
         appendToFile(path, data + NEW_LINE);
     }
 
@@ -71,7 +71,7 @@ public class CustomerFileRepository {
     public Customer findByUsername(String username) throws IOException {
         List<Customer> customers = findAll();
         for(Customer customer : customers) {
-            if (customer.username().trim().equalsIgnoreCase(username.trim())) {
+            if (customer.getUsername().trim().equalsIgnoreCase(username.trim())) {
                 return customer;
             }
         }
