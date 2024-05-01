@@ -2,6 +2,7 @@ package edu.iu.otiwari.c322finalbackend.security;
 
 import edu.iu.otiwari.c322finalbackend.model.Customer;
 import edu.iu.otiwari.c322finalbackend.repository.CustomerFileRepository;
+import edu.iu.otiwari.c322finalbackend.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsSecurityService implements
         UserDetailsService {
-    CustomerFileRepository customerRepository;
+    CustomerRepository customerRepository;
 
-    public UserDetailsSecurityService(CustomerFileRepository
+    public UserDetailsSecurityService(CustomerRepository
                                               customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -29,7 +30,7 @@ public class UserDetailsSecurityService implements
             }
             return User
                     .withUsername(username)
-                    .password(customer.password())
+                    .password(customer.getPassword())
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);

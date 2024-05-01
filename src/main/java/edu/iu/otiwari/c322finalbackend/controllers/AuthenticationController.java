@@ -2,6 +2,7 @@ package edu.iu.otiwari.c322finalbackend.controllers;
 
 import edu.iu.otiwari.c322finalbackend.model.Customer;
 import edu.iu.otiwari.c322finalbackend.repository.CustomerRepository;
+import edu.iu.otiwari.c322finalbackend.repository.FlowersRepository;
 import edu.iu.otiwari.c322finalbackend.security.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,14 +19,17 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     CustomerRepository customerRepository;
+
+    FlowersRepository flowersRepository;
     public AuthenticationController(AuthenticationManager
                                             authenticationManager,
                                     TokenService tokenService,
                                     CustomerRepository
-                                            customerRepository) {
+                                            customerRepository, FlowersRepository flowersRepository) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.customerRepository = customerRepository;
+        this.flowersRepository = flowersRepository;
     }
     @PostMapping("/signup")
     public void signup(@RequestBody Customer customer) {
@@ -39,13 +43,13 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public String login(@RequestBody Customer customer) {
         Authentication authentication = authenticationManager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                customer.username()
-                                , customer.password()));
+                                customer.getUsername()
+                                , customer.getPassword()));
 
         return tokenService.generateToken(authentication);
     }

@@ -1,11 +1,9 @@
 package edu.iu.otiwari.c322finalbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(schema = "ducks")
+@Table(schema = "flowers", name = "customers")
 public final class Customer{
     @Id
     private String username;
@@ -13,8 +11,11 @@ public final class Customer{
     private String email;
     public Customer(){}
 
-
-    public Customer(String username, String password, String email) {}
+    public Customer(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
 
     public String getUsername(){
@@ -41,15 +42,4 @@ public final class Customer{
         this.email = email;
     }
 
-    public String username() {
-        return username;
-    }
-
-    public String password() {
-        return password;
-    }
-
-    public String email() {
-        return email;
-    }
 }
